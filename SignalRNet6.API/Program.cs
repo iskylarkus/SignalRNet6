@@ -6,6 +6,15 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("CorsPolicy", builder =>
+    {
+        //builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod().AllowCredentials();
+        builder.WithOrigins("https://localhost:44380").AllowAnyHeader().AllowAnyMethod().AllowCredentials();
+    });
+});
+
 builder.Services.AddSignalR();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -21,6 +30,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors("CorsPolicy");
+
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
@@ -28,5 +39,10 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.MapHub<MyHub>("/MyHub");
+
+//app.UseEndpoints(endpoints =>
+//{
+//    endpoints.MapHub<MyHub>("/MyHub");
+//});
 
 app.Run();
