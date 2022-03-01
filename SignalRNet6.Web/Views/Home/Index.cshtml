@@ -2,7 +2,53 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+@section Scripts
+{
+
+    <script src="~/lib/microsoft/signalr/dist/browser/signalr.min.js"></script>
+
+    <script type="text/javascript">
+
+        $(document).ready(() => {
+
+            var connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:44396/MyHub").build();
+
+            $("#connectionStatus").text(connection.state);
+
+            connection.start().then(() => {
+                $("#connectionStatus").text(connection.state);
+            }).catch((err) => { console.log(err) });
+
+            $("#connectionStatus").text(connection.state);
+
+
+
+            $("#btnSaveName").click(() => {
+                connection.invoke("SendName", $("#txtName").val()).catch((err) => {
+                    console.log("error: " + err);
+                });
+            });
+
+
+
+            connection.on("ReceiveName", (name) => {
+                console.log("receive => "+name);
+            });
+
+        });
+
+    </script>
+
+}
+
+<div class="row">
+    <div class="col-md-8 offset-2">
+        <input class="form-control" type="text" id="txtName" />
+        <hr />
+        <button class="btn btn-primary" id="btnSaveName">Save Name</button>
+        <hr />
+        <div class="alert alert-info">
+            Connection Status : <strong id="connectionStatus"></strong>
+        </div>
+    </div>
 </div>
