@@ -14,7 +14,10 @@
             var connection = new signalR
             .HubConnectionBuilder()
             .configureLogging(signalR.LogLevel.Information)
-            .withUrl("https://localhost:44396/MyHub").build();
+            //.withAutomaticReconnect() // default
+            //.withAutomaticReconnect([0, 2000, 10000, 30000]) // default
+            .withAutomaticReconnect([1000,1000,2000,3000,5000,8000]) // custom
+            .withUrl("https://localhost:5001/MyHub").build();
 
             $("#connectionStatus").text(connection.state);
 
