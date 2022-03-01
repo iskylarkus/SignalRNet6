@@ -19,32 +19,58 @@
             .withAutomaticReconnect([1000,1000,2000,3000,5000,8000]) // custom
             .withUrl("https://localhost:5001/MyHub").build();
 
-            $("#connectionStatus").text(connection.state);
 
-            connection.start().then(() => {
+
+            showStatus();
+
+            startConnection();
+
+            showStatus();
+
+
+
+            // functions
+            function showStatus() {
                 $("#connectionStatus").text(connection.state);
-                $("#loading").hide();
-            }).catch((err) => { console.log("start: " + err) });
+            }
 
-            $("#connectionStatus").text(connection.state);
-
-
-
-            connection.onreconnecting((err) => {
+            function showLoading() {
                 $("#loading").show();
-                $("#connectionStatus").text(connection.state);
+            }
+
+            function hideLoading() {
+                $("#loading").hide();
+            }
+
+            function startConnection() {
+                connection.start().then(() => {
+                    showStatus();
+                    hideLoading();
+                }).catch((err) => { 
+                    console.log("startConnection: " + err);
+                    setTimeout(() => startConnection(), 2000);
+                });
+            }
+
+
+
+            // connection events
+            connection.onreconnecting((err) => {
+                showStatus();
+                showLoading();
                 console.log("onreconnecting: " + err);
             });
 
             connection.onreconnected((connectionId) => {
-                $("#loading").hide();
-                $("#connectionStatus").text(connection.state);
+                showStatus();
+                hideLoading();
                 console.log("connectionId: " + connectionId);
             });
 
             connection.onclose(() => {
-                $("#loading").hide();
-                $("#connectionStatus").text(connection.state);
+                showStatus();
+                hideLoading();
+                startConnection();
             });
 
 
@@ -75,7 +101,6 @@
 <div class="row">
     <div class="col-md-8 offset-2">
         <input class="form-control" type="text" id="txtName" />
-        <hr />
         <button class="btn btn-primary" id="btnSaveName">Save Name</button>
         <hr />
         <div class="alert alert-info">
