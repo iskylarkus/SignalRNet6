@@ -23,20 +23,42 @@
 
             connection.start().then(() => {
                 $("#connectionStatus").text(connection.state);
-            }).catch((err) => { console.log(err) });
+                $("#loading").hide();
+            }).catch((err) => { console.log("start: " + err) });
 
             $("#connectionStatus").text(connection.state);
 
 
 
+            connection.onreconnecting((err) => {
+                $("#loading").show();
+                $("#connectionStatus").text(connection.state);
+                console.log("onreconnecting: " + err);
+            });
+
+            connection.onreconnected((connectionId) => {
+                $("#loading").hide();
+                $("#connectionStatus").text(connection.state);
+                console.log("connectionId: " + connectionId);
+            });
+
+            connection.onclose(() => {
+                $("#loading").hide();
+                $("#connectionStatus").text(connection.state);
+            });
+
+
+
+            // click events
             $("#btnSaveName").click(() => {
                 connection.invoke("SendName", $("#txtName").val()).catch((err) => {
-                    console.log("error: " + err);
+                    console.log("clicksave: " + err);
                 });
             });
 
 
 
+            // on methods
             connection.on("ReceiveName", (name) => {
                 
                 $("#namesList").append(`<li class="list-group-item">${name}</li>`);
@@ -57,7 +79,15 @@
         <button class="btn btn-primary" id="btnSaveName">Save Name</button>
         <hr />
         <div class="alert alert-info">
-            Connection Status : <strong id="connectionStatus"></strong>
+            <div class="float-left">
+                Connection Status : <strong id="connectionStatus"></strong>
+            </div>
+            <div class="float-right">
+                <div id="loading" class="spinner-border" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+            <div class="clearfix"></div>
         </div>
     </div>
     <div class="col-md-8 offset-2">
