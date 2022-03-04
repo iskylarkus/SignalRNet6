@@ -29,7 +29,7 @@
 
 
 
-            // functions
+            // Functions
             function showStatus() {
                 $("#connectionStatus").text(connection.state);
             }
@@ -54,7 +54,7 @@
 
 
 
-            // connection events
+            // Subscribes on and Connection methods
             connection.onreconnecting((err) => {
                 showStatus();
                 showLoading();
@@ -73,23 +73,27 @@
                 startConnection();
             });
 
-
-
-            // click events
-            $("#btnSaveName").click(() => {
-                connection.invoke("SendName", $("#txtName").val()).catch((err) => {
-                    console.log("clicksave: " + err);
-                });
-            });
-
-
-
-            // on methods
             connection.on("ReceiveName", (name) => {
                 
                 $("#namesList").append(`<li class="list-group-item">${name}</li>`);
 
-                console.log("receive => "+name);
+                console.log("receive name => "+name);
+            });
+
+            connection.on("ReceiveClientCount", (clientCount) => {
+                
+                $("#clientCount").text(clientCount);
+
+                console.log("receive count => "+clientCount);
+            });
+
+
+
+            // Click events
+            $("#btnSend").click(() => {
+                connection.invoke("SendName", $("#txtName").val()).catch((err) => {
+                    console.log("clicksave: " + err);
+                });
             });
 
         });
@@ -99,15 +103,19 @@
 }
 
 <div class="row">
-    <div class="col-md-8 offset-2">
-        <input class="form-control" type="text" id="txtName" />
-        <button class="btn btn-primary" id="btnSaveName">Save Name</button>
+    <div class="col-md-8 offset-1">
+        <div>
+            <div class="col-md-10 float-start p-1"><input class="form-control" type="text" id="txtName" /></div>
+            <div class="col-md-2 float-end p-1"><button class="btn btn-primary btn-sm" id="btnSend">Send</button></div>
+            <div class="clearfix"></div>
+        </div>
         <hr />
         <div class="alert alert-info">
-            <div class="float-left">
-                Connection Status : <strong id="connectionStatus"></strong>
+            <div class="float-start">
+                <div class="float-start px-1">Connection Status : <strong id="connectionStatus"></strong></div>
+                <div class="float-end px-1">Client Count : <strong id="clientCount"></strong></div>
             </div>
-            <div class="float-right">
+            <div class="float-end px-1">
                 <div id="loading" class="spinner-border" role="status">
                     <span class="visually-hidden">Loading...</span>
                 </div>
