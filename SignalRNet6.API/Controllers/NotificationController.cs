@@ -18,7 +18,9 @@ namespace SignalRNet6.API.Controllers
         [HttpGet("{teamCount}")]
         public async Task<IActionResult> SetTeamCount(int teamCount)
         {
-            await _hubContext.Clients.All.SendAsync("Notify", $"Hi Guys, our team must have {teamCount} members only..!");
+            MyHub.TeamCount = teamCount;
+
+            await _hubContext.Clients.All.SendAsync("Notify", $"Hi Guys, Our team must have {teamCount} members only..!");
 
             return Ok();
         }

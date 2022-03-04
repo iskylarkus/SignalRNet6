@@ -74,24 +74,27 @@
             });
 
             connection.on("ReceiveName", (name) => {
-                
                 $("#namesList").append(`<li class="list-group-item">${name}</li>`);
 
                 console.log("receive name => "+name);
             });
 
             connection.on("ReceiveClientCount", (clientCount) => {
-                
                 $("#clientCount").text(clientCount);
 
                 console.log("receive count => "+clientCount);
             });
 
             connection.on("Notify", (message) => {
-                
                 $("#notify").text(message);
 
                 $("#notifydiv").html(`<div class="alert alert-success">${message}</div>`);
+
+                console.log("receive notify => "+message);
+            });
+
+            connection.on("Error", (message) => {
+                alert(message);
 
                 console.log("receive notify => "+message);
             });

@@ -6,10 +6,20 @@ namespace SignalRNet6.API.Hubs
     {
         private static List<string> Names { get; set; } = new List<string>();
         private static int ClientCount { get; set; } = 0;
+        public static int TeamCount { get; set; } = 7;
 
         public async Task SendName(string name)
         {
-            await Clients.All.SendAsync("ReceiveName", name);
+            if (TeamCount > Names.Count)
+            {
+                Names.Add(name);
+
+                await Clients.All.SendAsync("ReceiveName", name);
+            }
+            else
+            {
+                await Clients.Caller.SendAsync("Error", $"Our team must be no more than {TeamCount} members..!");
+            }
         }
 
         public async Task GetNames()
