@@ -45,6 +45,7 @@
             function startConnection() {
                 connection.start().then(() => {
                     showStatus();
+                    connection.invoke("GetNames");
                     hideLoading();
                 }).catch((err) => { 
                     console.log("startConnection: " + err);
@@ -77,6 +78,16 @@
                 $("#namesList").append(`<li class="list-group-item">${name}</li>`);
 
                 console.log("receive name => "+name);
+            });
+
+            connection.on("ReceiveNames", (names) => {
+                $("#namesList").empty();
+
+                names.forEach((name, index) => {
+                    $("#namesList").append(`<li class="list-group-item">${name}</li>`);
+                });
+
+                console.log("receive names => "+names.length);
             });
 
             connection.on("ReceiveClientCount", (clientCount) => {
