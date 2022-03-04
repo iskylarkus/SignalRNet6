@@ -87,6 +87,15 @@
                 console.log("receive count => "+clientCount);
             });
 
+            connection.on("Notify", (message) => {
+                
+                $("#notify").text(message);
+
+                $("#notifydiv").html(`<div class="alert alert-success">${message}</div>`);
+
+                console.log("receive notify => "+message);
+            });
+
 
 
             // Click events
@@ -120,6 +129,13 @@
                     <span class="visually-hidden">Loading...</span>
                 </div>
             </div>
+            <div class="clearfix"></div>
+        </div>
+        <div class="alert alert-info">
+            <div class="float-start">
+                <strong id="notify"></strong>
+            </div>
+            <div class="float-end p-1" id="notifydiv"></div>
             <div class="clearfix"></div>
         </div>
     </div>
