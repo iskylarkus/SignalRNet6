@@ -45,7 +45,8 @@
             function startConnection() {
                 connection.start().then(() => {
                     showStatus();
-                    connection.invoke("GetNames");
+                    //connection.invoke("GetNames");
+                    connection.invoke("GetNamesByGroup");
                     hideLoading();
                 }).catch((err) => { 
                     console.log("startConnection: " + err);
@@ -110,15 +111,69 @@
                 console.log("receive notify => "+message);
             });
 
+            connection.on("ReceiveMessageByGroup", (userName, teamName) => {
+                /*
+                if(teamName == "Team A")
+                    $("#ListTeamA").append(`<li class="list-group-item">${userName}</li>`);
+                else
+                    $("#ListTeamB").append(`<li class="list-group-item">${userName}</li>`);
+                 */
+
+                let listName = "List" + teamName.replace(" ", "");
+                $(`#${listName}`).append(`<li class="list-group-item">${userName}</li>`);
+
+                console.log("receive user / team => "+userName+" / "+teamName);
+            });
+
+            connection.on("ReceiveNamesByGroup", (teams) => {
+                teams.forEach((team, index) => {
+
+                    let listName = "List" + team.teamName.replace(" ", "");
+
+                    $(`#${listName}`).empty();
+
+                    team.users.forEach((user, indexu) => {
+
+                        $(`#${listName}`).append(`<li class="list-group-item">${user.name}</li>`);
+
+                    });
+                });
+
+                console.log("receive names => "+teams.length);
+            });
 
 
             // Click events
-            $("#btnSend").click(() => {
+            $("#btnSaveName").click(() => {
                 connection.invoke("SendName", $("#txtName").val()).catch((err) => {
-                    console.log("clicksave: " + err);
+                    console.log("clickSaveName: " + err);
                 });
             });
 
+            $("#btnSaveToTeam").click(() => {
+                let userName = $("#txtName").val();
+                
+                let teamName = $("input[type=radio]:checked").val();
+
+                connection.invoke("SendNameByGroup", userName, teamName ).catch((err) => {
+                    console.log("clickSaveToTeam: " + err);
+                });
+            });
+
+            $("input[type=radio]").change(() => {
+                let value = $("input[type=radio]:checked").val();
+
+                if(value == "Team A") {
+                    connection.invoke("AddToGroup", "Team A");
+                    connection.invoke("RemoveFromGroup", "Team B");
+                }
+                else {
+                    connection.invoke("AddToGroup", "Team B");
+                    connection.invoke("RemoveFromGroup", "Team A");
+                }
+
+                connection.invoke("GetNamesByGroup");
+            });
         });
 
     </script>
@@ -128,8 +183,15 @@
 <div class="row">
     <div class="col-md-8 offset-1">
         <div>
-            <div class="col-md-10 float-start p-1"><input class="form-control" type="text" id="txtName" /></div>
-            <div class="col-md-2 float-end p-1"><button class="btn btn-primary btn-sm" id="btnSend">Send</button></div>
+            <div class="col-md-6 float-start p-1">
+                <input class="form-control" type="text" id="txtName" />
+            </div>
+            <div class="col-md-3 float-start p-1">
+                <button class="btn btn-primary btn-sm" id="btnSaveName">Save Name</button>
+            </div>
+            <div class="col-md-3 float-start p-1">
+                <button class="btn btn-warning btn-sm" id="btnSaveToTeam">Save To Team</button>
+            </div>
             <div class="clearfix"></div>
         </div>
         <hr />
@@ -153,7 +215,27 @@
             <div class="clearfix"></div>
         </div>
     </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="TeamGroup" value="Team A" />
+            <label class="form-check-label">Team A</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="TeamGroup" value="Team B" />
+            <label class="form-check-label">Team B</label>
+        </div>
+    </div>
     <div class="col-md-8 offset-2">
-        <ul class="list-group" id="namesList"></ul>
+        <div class="row">
+            <div class="col-md-6">
+                <ul class="list-group" id="ListTeamA"></ul>
+            </div>
+            <div class="col-md-6">
+                <ul class="list-group" id="ListTeamB"></ul>
+            </div>
+        </div>
     </div>
 </div>
