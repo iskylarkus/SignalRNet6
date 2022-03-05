@@ -152,8 +152,18 @@
 
             $("#btnSaveToTeam").click(() => {
                 let userName = $("#txtName").val();
-                
+
+                if(userName == null || userName.trim() == "") {
+                    alert("please input a name");
+                    return;
+                }
+
                 let teamName = $("input[type=radio]:checked").val();
+
+                if(teamName == null) {
+                    alert("please select a team");
+                    return;
+                }
 
                 connection.invoke("SendNameByGroup", userName, teamName ).catch((err) => {
                     console.log("clickSaveToTeam: " + err);
@@ -231,9 +241,11 @@
     <div class="col-md-8 offset-2">
         <div class="row">
             <div class="col-md-6">
+                <h2>Team A</h2>
                 <ul class="list-group" id="ListTeamA"></ul>
             </div>
             <div class="col-md-6">
+                <h2>Team B</h2>
                 <ul class="list-group" id="ListTeamB"></ul>
             </div>
         </div>
