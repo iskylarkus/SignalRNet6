@@ -142,6 +142,14 @@
                 console.log("receive names => "+teams.length);
             });
 
+            connection.on("ReceiveProduct", (product) => {
+                $("#namesList").append(`<li class="list-group-item">${JSON.stringify(product)}</li>`);
+
+                console.log("receive product...");
+                console.log(product);
+            });
+
+
 
             // Click events
             $("#btnSaveName").click(() => {
@@ -184,6 +192,14 @@
 
                 connection.invoke("GetNamesByGroup");
             });
+
+            $("#btnSendProduct").click(() => {
+                let product = {"Id":1, "Name":"Kalem", "Stock":152, "Price":43};
+
+                connection.invoke("SendProduct", product).catch((err) => {
+                    console.log("clickSendProduct: " + err);
+                });
+            });
         });
 
     </script>
@@ -193,7 +209,7 @@
 <div class="row">
     <div class="col-md-8 offset-1">
         <div>
-            <div class="col-md-6 float-start p-1">
+            <div class="col-md-4 float-start p-1">
                 <input class="form-control" type="text" id="txtName" />
             </div>
             <div class="col-md-3 float-start p-1">
@@ -201,6 +217,9 @@
             </div>
             <div class="col-md-3 float-start p-1">
                 <button class="btn btn-warning btn-sm" id="btnSaveToTeam">Save To Team</button>
+            </div>
+            <div class="col-md-3 float-start p-1">
+                <button class="btn btn-danger btn-sm" id="btnSendProduct">Send Product</button>
             </div>
             <div class="clearfix"></div>
         </div>
@@ -224,6 +243,13 @@
             <div class="float-end p-1" id="notifydiv"></div>
             <div class="clearfix"></div>
         </div>
+
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <ul class="list-group" id="namesList"></ul>
     </div>
 </div>
 

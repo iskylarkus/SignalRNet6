@@ -17,6 +17,11 @@ namespace SignalRNet6.API.Hubs
         private static int ClientCount { get; set; } = 0;
         public static int TeamCount { get; set; } = 7;
 
+        public async Task SendProduct(Product product)
+        {
+            await Clients.All.SendAsync("ReceiveProduct", product);
+        }
+
         public async Task SendName(string name)
         {
             if (TeamCount > Names.Count)
