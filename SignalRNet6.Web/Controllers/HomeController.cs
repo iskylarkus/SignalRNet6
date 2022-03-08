@@ -18,6 +18,11 @@ namespace SignalRNet6.Web.Controllers
             return View();
         }
 
+        public IActionResult IndexWebHub()
+        {
+            return View();
+        }
+
         public IActionResult Privacy()
         {
             return View();
