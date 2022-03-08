@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignalRNet6.API", "SignalRNet6.API\SignalRNet6.API.csproj", "{7F38FEB5-48D3-4079-9C0F-C1704B5575B6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SignalRNet6.API", "SignalRNet6.API\SignalRNet6.API.csproj", "{7F38FEB5-48D3-4079-9C0F-C1704B5575B6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignalRNet6.Web", "SignalRNet6.Web\SignalRNet6.Web.csproj", "{0F51BD44-654C-4CFC-B8FA-88FCFF929AB1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SignalRNet6.Web", "SignalRNet6.Web\SignalRNet6.Web.csproj", "{0F51BD44-654C-4CFC-B8FA-88FCFF929AB1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignalRNet6.CovidChart.API", "SignalRNet6.CovidChart.API\SignalRNet6.CovidChart.API.csproj", "{A46A4238-CBA8-4C25-B2E3-863A0FB4F805}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{0F51BD44-654C-4CFC-B8FA-88FCFF929AB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0F51BD44-654C-4CFC-B8FA-88FCFF929AB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0F51BD44-654C-4CFC-B8FA-88FCFF929AB1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A46A4238-CBA8-4C25-B2E3-863A0FB4F805}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A46A4238-CBA8-4C25-B2E3-863A0FB4F805}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A46A4238-CBA8-4C25-B2E3-863A0FB4F805}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A46A4238-CBA8-4C25-B2E3-863A0FB4F805}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
