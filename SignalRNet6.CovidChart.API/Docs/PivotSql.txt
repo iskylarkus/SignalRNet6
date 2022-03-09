@@ -1,0 +1,10 @@
+﻿USE [SignalRNet6Covid19]
+GO
+SELECT [CovidDate], [1], [2], [3], [4], [5] FROM (
+	SELECT [City], [Count], CAST([CovidDate] AS DATE) AS [CovidDate] FROM [dbo].[Covids]
+) AS CovidSource
+PIVOT (
+	SUM([Count]) FOR [City] IN ([1], [2], [3], [4], [5])
+) AS CovidPivot
+ORDER BY [CovidDate] ASC
+GO
