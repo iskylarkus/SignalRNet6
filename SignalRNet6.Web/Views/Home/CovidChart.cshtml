@@ -1,0 +1,140 @@
+﻿@{
+    ViewData["Title"] = "CovidChart";
+}
+
+@section Scripts
+{
+
+    <script src="~/lib/microsoft/signalr/dist/browser/signalr.min.js"></script>
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+    <script type="text/javascript">
+
+        $(document).ready(() => {
+
+            var covidChart = new Array();
+            covidChart.push(["CovidDate", "İstanbul", "Ankara", "İzmir", "Konya", "Antalya"]);
+
+
+
+            var connection = new signalR
+            .HubConnectionBuilder()
+            .configureLogging(signalR.LogLevel.Information)
+            .withAutomaticReconnect([1000,1000,2000,3000,5000,8000]) // custom
+            .withUrl("https://localhost:7001/CovidHub").build();
+
+
+
+            showStatus();
+
+            startConnection();
+
+            showStatus();
+
+
+
+            // Functions
+            function showStatus() {
+                $("#connectionStatus").text(connection.state);
+            }
+
+            function showLoading() {
+                $("#loading").show();
+            }
+
+            function hideLoading() {
+                $("#loading").hide();
+            }
+
+            function startConnection() {
+                connection.start().then(() => {
+                    showStatus();
+                    connection.invoke("GetCovidList");
+                    hideLoading();
+                }).catch((err) => { 
+                    console.log("startConnection: " + err);
+                    setTimeout(() => startConnection(), 2000);
+                });
+            }
+
+
+
+            // Subscribes on and Connection methods
+            connection.onreconnecting((err) => {
+                showStatus();
+                showLoading();
+                console.log("onreconnecting: " + err);
+            });
+
+            connection.onreconnected((connectionId) => {
+                showStatus();
+                hideLoading();
+                console.log("connectionId: " + connectionId);
+            });
+
+            connection.onclose(() => {
+                showStatus();
+                hideLoading();
+                startConnection();
+            });
+
+            connection.on("ReceiveCovidList", (covidpivot) => {
+
+                covidChart = covidChart.splice(0, 1);
+
+                covidpivot.forEach((item) => {
+                    covidChart.push([item.covidDate, item.counts[0], item.counts[1], item.counts[2], item.counts[3], item.counts[4]]);
+                });
+
+                console.log(covidpivot);
+
+                google.charts.load('current', {'packages':['corechart']});
+                google.charts.setOnLoadCallback(drawChart);
+
+                console.log("receive covidchart => "+covidpivot);
+            });
+
+
+
+            function drawChart() {
+            var data = google.visualization.arrayToDataTable(covidChart);
+
+            var options = {
+                title: 'Covid19 Chart',
+                curveType: 'none', //'function',
+                legend: { position: 'bottom' }
+            };
+
+            var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+
+            chart.draw(data, options);
+            }
+
+        });
+
+    </script>
+
+}
+
+<div class="row">
+    <div class="col-md-10">
+        <div id="curve_chart" style="width: 1200px; height: 800px"></div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8 offset-1">
+        <div class="alert alert-info">
+            <div class="float-start">
+                <div class="float-start px-1">Connection Status : <strong id="connectionStatus"></strong></div>
+            </div>
+            <div class="float-end px-1">
+                <div id="loading" class="spinner-border" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>

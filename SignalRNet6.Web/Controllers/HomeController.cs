@@ -23,6 +23,11 @@ namespace SignalRNet6.Web.Controllers
             return View();
         }
 
+        public IActionResult CovidChart()
+        {
+            return View();
+        }
+
         public IActionResult Privacy()
         {
             return View();
