@@ -20,9 +20,11 @@ namespace SignalRNet6.CovidChart.API.Controllers
         {
             await _service.SaveCovid(covid);
 
-            IQueryable<Covid> covids = _service.GetList();
+            //IQueryable<Covid> covids = _service.GetList();
 
-            return Ok(covids);
+            //return Ok(covids);
+
+            return Ok(_service.GetCovidChart());
         }
 
         [HttpPut]
