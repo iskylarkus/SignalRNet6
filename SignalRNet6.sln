@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SignalRNet6.API", "SignalRN
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SignalRNet6.Web", "SignalRNet6.Web\SignalRNet6.Web.csproj", "{0F51BD44-654C-4CFC-B8FA-88FCFF929AB1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignalRNet6.CovidChart.API", "SignalRNet6.CovidChart.API\SignalRNet6.CovidChart.API.csproj", "{A46A4238-CBA8-4C25-B2E3-863A0FB4F805}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SignalRNet6.CovidChart.API", "SignalRNet6.CovidChart.API\SignalRNet6.CovidChart.API.csproj", "{A46A4238-CBA8-4C25-B2E3-863A0FB4F805}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

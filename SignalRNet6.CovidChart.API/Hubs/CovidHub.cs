@@ -3,7 +3,7 @@ using SignalRNet6.CovidChart.API.Models;
 
 namespace SignalRNet6.CovidChart.API.Hubs
 {
-    public class CovidHub:Hub
+    public class CovidHub : Hub
     {
         private readonly CovidService _service;
 

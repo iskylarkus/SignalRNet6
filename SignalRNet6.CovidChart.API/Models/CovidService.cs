@@ -31,7 +31,7 @@ namespace SignalRNet6.CovidChart.API.Models
         {
             List<CovidChart> covidCharts = new List<CovidChart>();
 
-            using(var command = _context.Database.GetDbConnection().CreateCommand())
+            using (var command = _context.Database.GetDbConnection().CreateCommand())
             {
                 command.CommandText = @"
                     SELECT [CovidDate], [1], [2], [3], [4], [5] FROM (
@@ -46,7 +46,7 @@ namespace SignalRNet6.CovidChart.API.Models
 
                 _context.Database.OpenConnection();
 
-                using(var reader = command.ExecuteReader())
+                using (var reader = command.ExecuteReader())
                 {
                     while (reader.Read())
                     {

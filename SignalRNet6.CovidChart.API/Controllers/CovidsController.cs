@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using SignalRNet6.CovidChart.API.Models;
 
 namespace SignalRNet6.CovidChart.API.Controllers
@@ -45,6 +44,6 @@ namespace SignalRNet6.CovidChart.API.Controllers
             });
 
             return Ok("Saved generated covid data to database");
-        } 
+        }
     }
 }

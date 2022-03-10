@@ -4,7 +4,7 @@ using SignalRNet6.API.Models;
 
 namespace SignalRNet6.API.Hubs
 {
-    public class MyHub:Hub
+    public class MyHub : Hub
     {
         private readonly AppDbContext _context;
 
@@ -61,14 +61,14 @@ namespace SignalRNet6.API.Hubs
             if (team == null)
             {
                 var newTeam = new Team { Name = teamName };
-                
+
                 newTeam.Users.Add(new User { Name = userName });
 
                 _context.Teams.Add(newTeam);
             }
             else
             {
-                team.Users.Add(new User { Name = userName});
+                team.Users.Add(new User { Name = userName });
             }
 
             await _context.SaveChangesAsync();

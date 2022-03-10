@@ -2,7 +2,7 @@
 
 namespace SignalRNet6.Web.Hubs
 {
-    public class MyHub:Hub
+    public class MyHub : Hub
     {
         public async Task SendMessage(string message)
         {
